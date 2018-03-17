@@ -1,5 +1,6 @@
 package com.ivandanilovich.game.cosmos;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
 
@@ -26,42 +27,58 @@ public class Space {
     }
 
     private Vector2 getF(Star star, PlanetVirtual planet) {
+        float fx, fy;
+        float e = 0.0000001f;
 
         float dx = Math.abs(star.pos.x - planet.pos.x);
-        float dy = Math.abs(star.pos.y - planet.pos.y);
-
-        float fx, fy;
-
         fx = G * ((star.mass * planet.mass) / (dx * dx));
-        fy = G * ((star.mass * planet.mass) / (dy * dy));
-
-        if (dx < 0.0005)
+        if (star.pos.x < planet.pos.x)
+            fx *= -1;
+        if (dx < e && dx > -e)
             fx = 0;
-        if (dy < 0.0005)
+        if (fx == Float.NaN)
+            fx = 0;
+
+
+        float dy = Math.abs(star.pos.y - planet.pos.y);
+        fy = G * ((star.mass * planet.mass) / (dy * dy));
+        if (star.pos.y < planet.pos.y)
+            fy *= -1;
+        if (dy < e && dy > -e)
+            fy = 0;
+        if (fy == Float.NaN)
             fy = 0;
 
-        if(fx==Float.NaN){
-            fx=0;
-        }
-        if(fy==Float.NaN){
-            fy=0;
-        }
-
+//        Gdx.app.log("ForceX", "" + fx);
         return new Vector2(fx, fy);
     }
 
-    private float getR(Vector2 v1, Vector2 v2) {
-        return (float) Math.sqrt(Math.pow(v1.x - v2.x, 2) + Math.pow(v1.y - v2.y, 2));
-    }
 
     public void render(float delta) {
 
-        for (PlanetVirtual pl : planets) {
+        for (PlanetVirtual planet : planets) {
+            if (planet==null) continue;
             Vector2 f = new Vector2(0, 0);
-            for (Star st : stars) {
-                f.add(getF(st, pl));
+
+            boolean flag = false;
+
+            for (Star star : stars) {
+                Vector2 myf = getF(star, planet);
+                f.add(myf);
+
+                flag = planet.isNeedDestroy(star);
+
+                Gdx.app.log("F", f+" "+flag);
+
+                if (flag)
+                    break;
             }
-            pl.applyForce(f, delta);
+            if (flag) {
+//                planet//destroy
+                planets.remove(planet);
+            } else {
+                planet.applyForce(f, delta);
+            }
         }
 
         draw();

@@ -86,14 +86,28 @@ public class Test2 implements Screen {
 
         shapeRenderer = new ShapeRenderer();
 
-        space=new Space(shapeRenderer);
+        space = new Space(shapeRenderer);
 
-        Star star = new Star(new Vector2(500,200),50,1000);
+//        Star star = new Star(new Vector2(500, 500), 10, 1000);
+//        planet = new PlanetVirtual(new Vector2(700, 500), 4, 100, new Vector2(0, 0));
+//
+//        space.addPlanet(planet);
+//        space.addStar(star);
+//
+//        space.addStar(new Star(new Vector2(800, 500), 20, 1000));
+//        space.addStar(new Star(new Vector2(0, 500), 20, 1000));
 
-        planet = new PlanetVirtual(new Vector2(100, 100), 40,1, new Vector2(0, 0));
-
-        space.addPlanet(planet);
-        space.addStar(star);
+        space.addStar(new Star(new Vector2(500, 500), 20, 1000));
+//        space.addPlanet(new PlanetVirtual(new Vector2(500, 700), 10, 100, new Vector2(0, 0)));
+//        space.addPlanet(new PlanetVirtual(new Vector2(100, 200), 10, 100, new Vector2(0, 0)));
+        space.addPlanet(new PlanetVirtual(new Vector2(500, 700), 10, 100, new Vector2(0, 0)));
+        space.addPlanet(new PlanetVirtual(new Vector2(700, 500), 10, 100, new Vector2(0, 0)));
+        space.addPlanet(new PlanetVirtual(new Vector2(500, 300), 10, 100, new Vector2(0, 0)));
+        space.addPlanet(new PlanetVirtual(new Vector2(300, 500), 10, 100, new Vector2(0, 0)));
+        space.addPlanet(new PlanetVirtual(new Vector2(300, 300), 10, 100, new Vector2(0, 0)));
+        space.addPlanet(new PlanetVirtual(new Vector2(300, 700), 10, 100, new Vector2(0, 0)));
+//        space.addPlanet(new PlanetVirtual(new Vector2(0, 0), 10, 100, new Vector2(0, 0)));
+//        space.addPlanet(new PlanetVirtual(new Vector2(55, 1000), 10, 100, new Vector2(0, 0)));
     }
 
     public void show() {
@@ -103,8 +117,8 @@ public class Test2 implements Screen {
         Gdx.gl.glClearColor(0, 0, 0, 0);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-        space.render(delta*100);
-        Gdx.app.log("TAG", planet.pos+" ");
+        space.render(delta * 20);
+//        Gdx.app.log("TAG", planet.pos + " ");
 
     }
 
