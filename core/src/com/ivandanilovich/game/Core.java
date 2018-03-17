@@ -1,5 +1,5 @@
 package com.ivandanilovich.game;
-
+//SSS
 import com.badlogic.gdx.Game;
 
 public class Core extends Game {
