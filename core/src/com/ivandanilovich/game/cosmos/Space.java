@@ -26,7 +26,7 @@ public class Space {
         stars.add(star);
     }
 
-    private Vector2 getF(Star star, PlanetVirtual planet) {
+  /*  private Vector2 getF(Star star, PlanetVirtual planet) {
         float fx, fy;
         float e = 0.0000001f;
 
@@ -52,34 +52,55 @@ public class Space {
 //        Gdx.app.log("ForceX", "" + fx);
         return new Vector2(fx, fy);
     }
+*/
+    private float getR(Vector2 v1, Vector2 v2) {
+        return (float) Math.sqrt(Math.pow(v1.x - v2.x, 2) + Math.pow(v1.y - v2.y, 2));
+    }
+
+
+    private Vector2 getFAngle(Star star, PlanetVirtual planet) {
+        float e = 0.0000001f;
+
+        float r = getR(star.pos, planet.pos);
+
+        float f = G * ((star.mass * planet.mass) / (r * r));
+
+        float dx = star.pos.x - planet.pos.x;
+        float dy = star.pos.y - planet.pos.y;
+
+        float angle = (float) Math.atan(dy / dx);
+
+
+//        if(dx==0 && dy>0){
+//            angle=90;
+//        }
+//
+        if(dx<0){
+            f*=-1;
+        }
+
+        return new Vector2(f, angle);
+    }
 
 
     public void render(float delta) {
 
+        PlanetVirtual planetDel = null;
         for (PlanetVirtual planet : planets) {
-            if (planet==null) continue;
             Vector2 f = new Vector2(0, 0);
-
-            boolean flag = false;
-
             for (Star star : stars) {
-                Vector2 myf = getF(star, planet);
+                Vector2 myf = getFAngle(star, planet);
                 f.add(myf);
-
-                flag = planet.isNeedDestroy(star);
-
-                Gdx.app.log("F", f+" "+flag);
-
-                if (flag)
-                    break;
+                if (planet.isNeedDestroy(star)) {
+                    planetDel = planet;
+                }
             }
-            if (flag) {
-//                planet//destroy
-                planets.remove(planet);
-            } else {
-                planet.applyForce(f, delta);
-            }
+            planet.applyForce(f, delta);
         }
+
+        if (planetDel != null)
+            planets.remove(planetDel);
+
 
         draw();
     }

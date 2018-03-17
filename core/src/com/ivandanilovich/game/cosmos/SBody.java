@@ -11,13 +11,13 @@ public class SBody {
     public float radius;
     public ShapeRenderer shapeRenderer;
 
-    public void setShapeRenderer(ShapeRenderer s){
-        shapeRenderer=s;
+    public void setShapeRenderer(ShapeRenderer s) {
+        shapeRenderer = s;
     }
 
-    public void draw(){
+    public void draw() {
 
-        shapeRenderer.circle(pos.x,pos.y,radius);
+        shapeRenderer.circle(pos.x, pos.y, radius);
 
     }
 }

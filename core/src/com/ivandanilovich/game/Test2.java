@@ -63,6 +63,8 @@ public class Test2 implements Screen {
 
             @Override
             public boolean touchUp(int screenX, int screenY, int pointer, int button) {
+                space.addPlanet(new PlanetVirtual(new Vector2(screenX, Height-screenY), 10, 100, new Vector2(0, 0)));
+
                 return false;
             }
 
@@ -98,6 +100,7 @@ public class Test2 implements Screen {
 //        space.addStar(new Star(new Vector2(0, 500), 20, 1000));
 
         space.addStar(new Star(new Vector2(500, 500), 20, 1000));
+        space.addStar(new Star(new Vector2(700, 300), 20, 1000));
 //        space.addPlanet(new PlanetVirtual(new Vector2(500, 700), 10, 100, new Vector2(0, 0)));
 //        space.addPlanet(new PlanetVirtual(new Vector2(100, 200), 10, 100, new Vector2(0, 0)));
         space.addPlanet(new PlanetVirtual(new Vector2(500, 700), 10, 100, new Vector2(0, 0)));
@@ -106,6 +109,9 @@ public class Test2 implements Screen {
         space.addPlanet(new PlanetVirtual(new Vector2(300, 500), 10, 100, new Vector2(0, 0)));
         space.addPlanet(new PlanetVirtual(new Vector2(300, 300), 10, 100, new Vector2(0, 0)));
         space.addPlanet(new PlanetVirtual(new Vector2(300, 700), 10, 100, new Vector2(0, 0)));
+        space.addPlanet(new PlanetVirtual(new Vector2(700, 700), 10, 100, new Vector2(0, 0)));
+        space.addPlanet(new PlanetVirtual(new Vector2(700, 800), 10, 100, new Vector2(0, 0)));
+        space.addPlanet(new PlanetVirtual(new Vector2(900, 800), 10, 100, new Vector2(0, 0)));
 //        space.addPlanet(new PlanetVirtual(new Vector2(0, 0), 10, 100, new Vector2(0, 0)));
 //        space.addPlanet(new PlanetVirtual(new Vector2(55, 1000), 10, 100, new Vector2(0, 0)));
     }
