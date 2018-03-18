@@ -21,6 +21,7 @@ public class Test2 implements Screen {
     private Core core;
     private Space space;
     private boolean isDrawLine = false;
+    private float velConst  = 0.01f;
 
     public Test2(Core Core) {
         core = Core;
@@ -55,7 +56,7 @@ public class Test2 implements Screen {
             public boolean touchUp(int screenX, int screenY, int pointer, int button) {
                 isDrawLine = false;
                 space.addPlanetReal(new PlanetReal(new Vector2(x0, y0), 10, 100,
-                        new Vector2((x0 - x1) * 0.01f, (y0 - y1) * 0.01f),40));
+                        new Vector2((x0 - x1) * velConst, (y0 - y1) * velConst),40));
                 return false;
             }
 
@@ -81,7 +82,7 @@ public class Test2 implements Screen {
         ShapeRenderer shapeRendererSpase = new ShapeRenderer();
         space = new Space(shapeRendererSpase);
 
-//        space.addStar(new Star(new Vector2(500, 500), 20, 1000));
+        space.addStar(new Star(new Vector2(500, 500), 20, 5000));
 //        space.addStar(new Star(new Vector2(800, 300), 20, 1000));
 //        space.addStar(new Star(new Vector2(0, 0), 20, 1000));
 
@@ -95,7 +96,7 @@ public class Test2 implements Screen {
         Gdx.gl.glClearColor(0, 0, 0, 0);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-        space.renderRealPlanet(delta * 10);///////////////////////////
+        space.renderRealPlanet(delta * 50);///////////////////////////
 
         if (isDrawLine) {
             shapeRendererLine.begin(ShapeRenderer.ShapeType.Line);

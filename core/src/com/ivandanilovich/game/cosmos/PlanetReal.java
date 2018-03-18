@@ -25,6 +25,7 @@ public class PlanetReal extends PlanetVirtual {
     }
 
     public boolean isNeedDestroyBounds() {
-        return pos.x > Width || pos.x < 0 || pos.y < 0 || pos.y > Height;
+        int N=1000;
+        return pos.x > Width+N || pos.x < 0-N || pos.y < 0-N || pos.y > Height+N;
     }
 }
