@@ -1,6 +1,3 @@
-
-
-
 package com.ivandanilovich.game.cosmos;
 
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
@@ -11,18 +8,28 @@ import java.util.ArrayList;
 public class Space {
     public float G = 1f;
     ArrayList<Star> stars = new ArrayList<Star>();
-    ArrayList<PlanetVirtual> planets = new ArrayList<PlanetVirtual>();
+    ArrayList<PlanetVirtual> planetVirtuals = new ArrayList<PlanetVirtual>();
+    ArrayList<PlanetReal> planetReals = new ArrayList<PlanetReal>();
+
+    Vector2[] forces;
+
     ShapeRenderer shapeRenderer;
 
     public Space(ShapeRenderer shapeRenderer) {
         this.shapeRenderer = shapeRenderer;
 
 
+        forces = new Vector2[100];
     }
 
     public void addPlanet(PlanetVirtual p) {
         p.setShapeRenderer(shapeRenderer);
-        planets.add(p);
+        planetVirtuals.add(p);
+    }
+
+    public void addPlanetReal(PlanetReal p) {
+        p.setShapeRenderer(shapeRenderer);
+        planetReals.add(p);
     }
 
     public void addStar(Star star) {
@@ -57,10 +64,12 @@ public class Space {
         float fy = (float) (FA.x * Math.sin(FA.y));
         return new Vector2(fx, fy);
     }
+
+
     public void render(float delta) {
 
         PlanetVirtual planetDel = null;
-        for (PlanetVirtual planet : planets) {
+        for (PlanetVirtual planet : planetVirtuals) {
             Vector2 f = new Vector2(0, 0);
             for (Star star : stars) {
                 Vector2 myf = FA2FxFy(getForceWithAngle(star, planet));
@@ -73,20 +82,76 @@ public class Space {
         }
 
         if (planetDel != null)
-            planets.remove(planetDel);
-
-
+            planetVirtuals.remove(planetDel);
         draw();
+    }
+
+    public  void renderRealPlanet(float delta){
+        PlanetReal planetDel = null;
+        int i=0;
+
+        for (PlanetReal planet1 : planetReals) {
+
+
+            Vector2 f = new Vector2(0, 0);
+            for (PlanetReal planet2 : planetReals) {
+
+                Vector2 myf = new Vector2(0,0);
+                if(planet1!=planet2)
+                 myf = FA2FxFy(getForceWithAngleReal(planet1, planet2));
+
+                f.add(myf);
+            }
+
+            //planet1.applyForce(f, delta);
+            forces[i++]=new Vector2(f);
+
+            if(planet1.isNeedDestroyBounds()){
+                planetDel=planet1;
+            }
+        }
+        int j=0;
+        for (PlanetReal pl : planetReals) {
+            pl.applyForce(forces[j++],delta);
+        }
+        if(planetDel!=null) {
+            planetReals.remove(planetDel);
+        }
+        draw();
+    }
+
+    private Vector2 getForceWithAngleReal(PlanetReal planet1, PlanetReal planet2) {
+
+        float r = getR(planet2.pos, planet1.pos);
+        float f = (float) (G * ((planet2.mass * planet1.mass) / (Math.pow(r,1))));
+
+        float dx = planet2.pos.x - planet1.pos.x;
+        float dy = planet2.pos.y - planet1.pos.y;
+
+        float angle = (float) Math.atan(dy / dx);
+
+        if(dx<0){
+            f=-f;
+        }
+
+        if(r<planet1.orbit){
+            f=-f;
+        }
+
+        return new Vector2(f, angle);
     }
 
     private void draw() {
 
         shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
-        for (PlanetVirtual pl : planets) {
+        for (PlanetVirtual pl : planetVirtuals) {
             pl.draw();
         }
         for (Star st : stars) {
             st.draw();
+        }
+        for (PlanetReal pr : planetReals) {
+            pr.draw();
         }
         shapeRenderer.end();
     }

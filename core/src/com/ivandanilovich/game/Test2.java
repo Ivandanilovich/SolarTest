@@ -6,6 +6,7 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
+import com.ivandanilovich.game.cosmos.PlanetReal;
 import com.ivandanilovich.game.cosmos.PlanetVirtual;
 import com.ivandanilovich.game.cosmos.Space;
 import com.ivandanilovich.game.cosmos.Star;
@@ -53,8 +54,8 @@ public class Test2 implements Screen {
             @Override
             public boolean touchUp(int screenX, int screenY, int pointer, int button) {
                 isDrawLine = false;
-                space.addPlanet(new PlanetVirtual(new Vector2(x0, y0), 10, 100,
-                        new Vector2((x0 - x1) * 0.01f, (y0 - y1) * 0.01f)));
+                space.addPlanetReal(new PlanetReal(new Vector2(x0, y0), 10, 100,
+                        new Vector2((x0 - x1) * 0.01f, (y0 - y1) * 0.01f),40));
                 return false;
             }
 
@@ -80,9 +81,9 @@ public class Test2 implements Screen {
         ShapeRenderer shapeRendererSpase = new ShapeRenderer();
         space = new Space(shapeRendererSpase);
 
-        space.addStar(new Star(new Vector2(500, 500), 20, 1000));
-        space.addStar(new Star(new Vector2(800, 300), 20, 1000));
-        space.addStar(new Star(new Vector2(0, 0), 20, 1000));
+//        space.addStar(new Star(new Vector2(500, 500), 20, 1000));
+//        space.addStar(new Star(new Vector2(800, 300), 20, 1000));
+//        space.addStar(new Star(new Vector2(0, 0), 20, 1000));
 
         shapeRendererLine = new ShapeRenderer();
     }
@@ -94,7 +95,7 @@ public class Test2 implements Screen {
         Gdx.gl.glClearColor(0, 0, 0, 0);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-        space.render(delta * 40);
+        space.renderRealPlanet(delta * 10);///////////////////////////
 
         if (isDrawLine) {
             shapeRendererLine.begin(ShapeRenderer.ShapeType.Line);
