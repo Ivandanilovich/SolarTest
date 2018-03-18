@@ -81,7 +81,7 @@ public class Space {
 
     private void draw() {
 
-        shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
+        shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
         for (PlanetVirtual pl : planets) {
             pl.draw();
         }
