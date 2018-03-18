@@ -1,6 +1,8 @@
+
+
+
 package com.ivandanilovich.game.cosmos;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
 
@@ -14,6 +16,8 @@ public class Space {
 
     public Space(ShapeRenderer shapeRenderer) {
         this.shapeRenderer = shapeRenderer;
+
+
     }
 
     public void addPlanet(PlanetVirtual p) {
@@ -26,43 +30,14 @@ public class Space {
         stars.add(star);
     }
 
-  /*  private Vector2 getF(Star star, PlanetVirtual planet) {
-        float fx, fy;
-        float e = 0.0000001f;
-
-        float dx = Math.abs(star.pos.x - planet.pos.x);
-        fx = G * ((star.mass * planet.mass) / (dx * dx));
-        if (star.pos.x < planet.pos.x)
-            fx *= -1;
-        if (dx < e && dx > -e)
-            fx = 0;
-        if (fx == Float.NaN)
-            fx = 0;
-
-
-        float dy = Math.abs(star.pos.y - planet.pos.y);
-        fy = G * ((star.mass * planet.mass) / (dy * dy));
-        if (star.pos.y < planet.pos.y)
-            fy *= -1;
-        if (dy < e && dy > -e)
-            fy = 0;
-        if (fy == Float.NaN)
-            fy = 0;
-
-//        Gdx.app.log("ForceX", "" + fx);
-        return new Vector2(fx, fy);
-    }
-*/
     private float getR(Vector2 v1, Vector2 v2) {
         return (float) Math.sqrt(Math.pow(v1.x - v2.x, 2) + Math.pow(v1.y - v2.y, 2));
     }
 
 
-    private Vector2 getFAngle(Star star, PlanetVirtual planet) {
-        float e = 0.0000001f;
+    private Vector2 getForceWithAngle(Star star, PlanetVirtual planet) {
 
         float r = getR(star.pos, planet.pos);
-
         float f = G * ((star.mass * planet.mass) / (r * r));
 
         float dx = star.pos.x - planet.pos.x;
@@ -70,26 +45,25 @@ public class Space {
 
         float angle = (float) Math.atan(dy / dx);
 
-
-//        if(dx==0 && dy>0){
-//            angle=90;
-//        }
-//
         if(dx<0){
-            f*=-1;
+            f=-f;
         }
 
         return new Vector2(f, angle);
     }
 
-
+    public Vector2 FA2FxFy(Vector2 FA) {
+        float fx = (float) (FA.x * Math.cos(FA.y));
+        float fy = (float) (FA.x * Math.sin(FA.y));
+        return new Vector2(fx, fy);
+    }
     public void render(float delta) {
 
         PlanetVirtual planetDel = null;
         for (PlanetVirtual planet : planets) {
             Vector2 f = new Vector2(0, 0);
             for (Star star : stars) {
-                Vector2 myf = getFAngle(star, planet);
+                Vector2 myf = FA2FxFy(getForceWithAngle(star, planet));
                 f.add(myf);
                 if (planet.isNeedDestroy(star)) {
                     planetDel = planet;
@@ -117,3 +91,6 @@ public class Space {
         shapeRenderer.end();
     }
 }
+
+
+
